@@ -1,6 +1,7 @@
 import logging
 
-from os import remove as osremove, walk, path as ospath, rename as osrename
+from os import remove as osremove, walk, path as ospath, rename as osrename, \
+    environ
 from time import time, sleep
 from pyrogram.errors import FloodWait, RPCError
 from PIL import Image
@@ -127,7 +128,7 @@ class TgUploader:
                     notMedia = True
 
 
-                log_channel_id = int(os.environ.get("LOG_CHANNEL_ID", 0))
+                log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
                 if (not notMedia) and self.__sent_msg and log_channel_id:
                     try: __sent_msg.copy(chat_id=log_channel_id)
                     except: pass
