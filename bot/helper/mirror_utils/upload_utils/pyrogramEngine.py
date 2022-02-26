@@ -127,11 +127,6 @@ class TgUploader:
                 else:
                     notMedia = True
 
-
-                log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
-                if self.__sent_msg and log_channel_id:
-                    try: self.__sent_msg.copy(chat_id=log_channel_id)
-                    except Exception as e: LOGGER.error(e)
             if self.__as_doc or notMedia:
                 if file_.upper().endswith(VIDEO_SUFFIXES) and thumb is None:
                     thumb = take_ss(up_path)
@@ -146,6 +141,10 @@ class TgUploader:
                                                              parse_mode="html",
                                                              disable_notification=True,
                                                              progress=self.__upload_progress)
+            log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
+            if self.__sent_msg and self.__sent_msg.media and log_channel_id:
+                try: self.__sent_msg.copy(chat_id=log_channel_id)
+                except Exception as e: LOGGER.error(e)
         except FloodWait as f:
             LOGGER.warning(str(f))
             sleep(f.x)
