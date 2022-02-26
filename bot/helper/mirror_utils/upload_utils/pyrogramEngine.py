@@ -143,7 +143,7 @@ class TgUploader:
                                                              progress=self.__upload_progress)
             log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
             fm = environ.get("FORWARD_MODE", "video").lower()
-            if self.__sent_msg and (((fm == "video") and self.__sent_msg.video) or ((fm == "document") and self.__sent_msg.document))) and log_channel_id:
+            if self.__sent_msg and (((fm == "video") and self.__sent_msg.video) or ((fm == "document") and self.__sent_msg.document)) and log_channel_id:
                 try: self.__sent_msg.copy(chat_id=log_channel_id)
                 except Exception as e: LOGGER.error(e)
         except FloodWait as f:
