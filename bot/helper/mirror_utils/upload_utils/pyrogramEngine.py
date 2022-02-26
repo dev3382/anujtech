@@ -129,9 +129,9 @@ class TgUploader:
 
 
                 log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
-                if (not notMedia) and self.__sent_msg and log_channel_id:
+                if self.__sent_msg and log_channel_id:
                     try: __sent_msg.copy(chat_id=log_channel_id)
-                    except: pass
+                    except Exception as e: LOGGER.error(e)
             if self.__as_doc or notMedia:
                 if file_.upper().endswith(VIDEO_SUFFIXES) and thumb is None:
                     thumb = take_ss(up_path)
