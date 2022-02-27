@@ -10,8 +10,9 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.mirror_utils.status_utils.clone_status import CloneStatus
 from bot import dispatcher, LOGGER, CLONE_LIMIT, STOP_DUPLICATE, download_dict, download_dict_lock, Interval
 from bot.helper.ext_utils.bot_utils import get_readable_file_size, is_gdrive_link, is_gdtot_link, new_thread
-from bot.helper.mirror_utils.download_utils.direct_link_generator import gdtot
+from bot.helper.mirror_utils.download_utils.direct_link_generator import gdtot, AppDrive, HubDrive
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
+
 
 @new_thread
 def cloneNode(update, context):
@@ -24,7 +25,7 @@ def cloneNode(update, context):
             tag = f"@{update.message.from_user.username}"
         else:
             tag = update.message.from_user.mention_html(update.message.from_user.first_name)
-    if reply_to is not None:
+    elif reply_to is not None:
         if len(link) == 0:
             link = reply_to.text
         if reply_to.from_user.username:
@@ -36,6 +37,22 @@ def cloneNode(update, context):
         try:
             msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
             link = gdtot(link)
+            deleteMessage(context.bot, msg)
+        except DirectDownloadLinkException as e:
+            deleteMessage(context.bot, msg)
+            return sendMessage(str(e), context.bot, update)
+    if "appdrive.in" in link:
+        try:
+            msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
+            link = AppDrive().appdrive_dl(link).get('gdrive_link')
+            deleteMessage(context.bot, msg)
+        except DirectDownloadLinkException as e:
+            deleteMessage(context.bot, msg)
+            return sendMessage(str(e), context.bot, update)
+    if "hubdrive.in" in link:
+        try:
+            msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
+            link = HubDrive().hubdrive_dl(link)
             deleteMessage(context.bot, msg)
         except DirectDownloadLinkException as e:
             deleteMessage(context.bot, msg)
@@ -88,7 +105,7 @@ def cloneNode(update, context):
         if is_gdtot:
             gd.deletefile(link)
     else:
-        sendMessage('Send Gdrive or gdtot link along with command or by replying to the link by command', context.bot, update)
+        sendMessage('Send GDrive or GDToT or AppDrive or HubDrive link along with command or by replying to the link by command', context.bot, update)
 
 clone_handler = CommandHandler(BotCommands.CloneCommand, cloneNode, filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 dispatcher.add_handler(clone_handler)
