@@ -2,7 +2,8 @@ import requests
 
 from re import match, search, split as resplit
 from time import sleep, time
-from os import path as ospath, remove as osremove, listdir, walk
+from os import path as ospath, remove as osremove, listdir, walk, \
+    environ
 from shutil import rmtree
 from threading import Thread
 from subprocess import run as srun
@@ -278,6 +279,10 @@ class MirrorListener:
                     self.clean()
                 else:
                     update_all_messages()
+                log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
+            if sendMessage and log_channel_id:
+                try: ssemdMessage.copy(chat_id=log_channel_id)
+                except Exception as e: LOGGER.error(e)
 
     def onUploadError(self, error):
         e_str = error.replace('<', '').replace('>', '')
