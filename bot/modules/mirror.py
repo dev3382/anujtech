@@ -281,7 +281,7 @@ class MirrorListener:
                     update_all_messages()
                 log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
             if sendMessage and log_channel_id:
-                try: ssemdMessage.copy(chat_id=log_channel_id)
+                try: sendMessage.copy(chat_id=log_channel_id)
                 except Exception as e: LOGGER.error(e)
 
     def onUploadError(self, error):
