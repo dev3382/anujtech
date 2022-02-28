@@ -281,7 +281,7 @@ class MirrorListener:
                     update_all_messages()
                 log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
             if sendMessage and log_channel_id:
-                try: sendMessage.copy(chat_id=log_channel_id)
+                try: sendMessage("{chat_id=log_channel_id}", msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
                 except Exception as e: LOGGER.error(e)
 
     def onUploadError(self, error):
