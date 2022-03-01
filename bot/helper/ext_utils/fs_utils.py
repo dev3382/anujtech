@@ -11,7 +11,7 @@ from math import ceil
 from .exceptions import NotSupportedExtractionArchive
 from bot import aria2, LOGGER, DOWNLOAD_DIR, get_client, TG_SPLIT_SIZE, EQUAL_SPLITS, STORAGE_THRESHOLD
 
-VIDEO_SUFFIXES = ("M4V", "MP4", "MOV", "FLV", "WMV", "3GP", "MPG", "WEBM", "MKV", "AVI")
+VIDEO_SUFFIXES = ("M4V", "MP4", "MOV", "FLV", "WMV", "3GP", "MPG", "WEBM", "AVI")
 
 def clean_download(path: str):
     if ospath.exists(path):
@@ -85,6 +85,8 @@ def check_storage_threshold(size: int, arch=False, alloc=False):
     return True
 
 def get_base_name(orig_path: str):
+    if orig_path.endswith(".mkv"):
+        return orig_path.rsplit(".tar.bz2", 1)[0]
     if orig_path.endswith(".tar.bz2"):
         return orig_path.rsplit(".tar.bz2", 1)[0]
     elif orig_path.endswith(".tar.gz"):
@@ -196,7 +198,7 @@ def split(path, size, file_, dirpath, split_size, start_time=0, i=1, inLoop=Fals
         base_name, extension = ospath.splitext(file_)
         split_size = split_size - 2500000
         while i <= parts :
-            parted_name = "{}.part{}{}".format(str(base_name), str(extension), str(i).zfill(3))
+            parted_name = "{}.part{}{}".format(str(base_name), str(i).zfill(3), str(extension))
             out_path = ospath.join(dirpath, parted_name)
             srun(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i",
                             path, "-ss", str(start_time), "-fs", str(split_size),
