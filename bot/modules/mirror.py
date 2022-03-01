@@ -35,7 +35,7 @@ from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
 from bot.helper.mirror_utils.upload_utils.pyrogramEngine import TgUploader
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import sendMessage, sendMesaageToChannel, sendMarkup, delete_all_messages, update_all_messages
+from bot.helper.telegram_helper.message_utils import sendMessage, sendMarkup, delete_all_messages, update_all_messages
 from bot.helper.telegram_helper.button_build import ButtonMaker
 
 
@@ -279,10 +279,6 @@ class MirrorListener:
                     self.clean()
                 else:
                     update_all_messages()
-                log_channel_id = int(environ.get("LOG_CHANNEL_ID", 0))
-            if sendMessage and log_channel_id:
-                try: sendMesaageToChannel(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
-                except Exception as e: LOGGER.error(e)
 
     def onUploadError(self, error):
         e_str = error.replace('<', '').replace('>', '')
