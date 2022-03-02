@@ -28,10 +28,10 @@ IMAGE_SUFFIXES = ("JPG", "JPX", "PNG", "WEBP", "CR2", "TIF", "BMP", "JXR", "PSD"
 
 def change_metadata(the_media: str):
     file_name = the_media.rsplit("/", 1)[-1]
-    title = "Telegram @madxmovies"
-    video_title = "Telegram @madxmovies"
-    audio_title = "Telegram @madxmovies"
-    subtitle_title = "Telegram @madxmovies"
+    title = "Telegram @Madxmovies"
+    video_title = "Telegram @Madxmovies"
+    audio_title = "Telegram @Madxmovies"
+    subtitle_title = "Telegram @Madxmovies"
 
     try:
         result = srun(shlex.split(f"ffprobe -hide_banner -loglevel error -show_streams -print_format  json -show_format {shlex.quote(the_media)}"), capture_output=True)
