@@ -10,7 +10,7 @@ for original authorship. """
 
 import requests
 import re, os
-import cloudscraper
+import manga-py as manga_py
 
 from lxml import etree
 from base64 import b64decode
@@ -18,6 +18,7 @@ from urllib.parse import urlparse, unquote
 from json import loads as jsnloads
 from lk21 import Bypass
 from cfscrape import create_scraper
+from manga_py import cloudscraper
 from bs4 import BeautifulSoup
 from base64 import standard_b64encode
 
