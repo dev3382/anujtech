@@ -60,7 +60,7 @@ def cloneNode(update, context):
     if "sharer.pw" in link:
         try:
             msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
-            link = SharerPw().appdrive_dl(link).get('gdrive_link')
+            link = SharerPw().sharer_pw_dl(link).get('gdrive_link')
             deleteMessage(context.bot, msg)
         except DirectDownloadLinkException as e:
             deleteMessage(context.bot, msg)
