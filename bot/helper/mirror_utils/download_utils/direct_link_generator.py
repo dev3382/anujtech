@@ -10,7 +10,6 @@ for original authorship. """
 
 import requests
 import re, os
-import manga-py as manga_py
 
 from lxml import etree
 from base64 import b64decode
