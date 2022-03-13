@@ -10,7 +10,7 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.mirror_utils.status_utils.clone_status import CloneStatus
 from bot import dispatcher, LOGGER, CLONE_LIMIT, STOP_DUPLICATE, download_dict, download_dict_lock, Interval
 from bot.helper.ext_utils.bot_utils import get_readable_file_size, is_gdrive_link, is_gdtot_link, new_thread
-from bot.helper.mirror_utils.download_utils.direct_link_generator import gdtot, AppDrive, HubDrive
+from bot.helper.mirror_utils.download_utils.direct_link_generator import gdtot, AppDrive, HubDrive, SharerPw
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
 
 
@@ -53,6 +53,14 @@ def cloneNode(update, context):
         try:
             msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
             link = HubDrive().hubdrive_dl(link)
+            deleteMessage(context.bot, msg)
+        except DirectDownloadLinkException as e:
+            deleteMessage(context.bot, msg)
+            return sendMessage(str(e), context.bot, update)
+    if "sharer.pw" in link:
+        try:
+            msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
+            link = SharerPw().appdrive_dl(link).get('gdrive_link')
             deleteMessage(context.bot, msg)
         except DirectDownloadLinkException as e:
             deleteMessage(context.bot, msg)
