@@ -166,7 +166,7 @@ class SharerPw:
         res = scraper.get(url)
         token = re.findall("_token\s=\s'(.*?)'", res.text, re.DOTALL)[0]
         ddl_btn = etree.HTML(res.content).xpath("//button[@id='btndirect']")
-        info_parsed = parse_info(res)
+        info_parsed = self.parse_info(res)
         info_parsed['error'] = True
         info_parsed['src_url'] = url
         info_parsed['link_type'] = 'login' # direct/login
