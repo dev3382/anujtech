@@ -49,7 +49,7 @@ def cloneNode(update, context):
         except DirectDownloadLinkException as e:
             deleteMessage(context.bot, msg)
             return sendMessage(str(e), context.bot, update)
-    if "hubdrive.in" in link:
+    if "hubdrive.cc" in link:
         try:
             msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
             link = HubDrive().hubdrive_dl(link)
